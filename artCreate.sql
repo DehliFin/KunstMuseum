@@ -17,7 +17,7 @@ DROP TABLE IF EXISTS exhibition_artworks;
 DROP TABLE IF EXISTS collection_items;
 DROP TABLE IF EXISTS media_files;
 DROP TABLE IF EXISTS restorations;
-DROP TABLE IF EXISTS provenance;
+DROP TABLE IF EXISTS ownership;
 DROP TABLE IF EXISTS transactions;
 DROP TABLE IF EXISTS exhibitions;
 DROP TABLE IF EXISTS collections;
@@ -25,6 +25,7 @@ DROP TABLE IF EXISTS artworks;
 DROP TABLE IF EXISTS locations;
 DROP TABLE IF EXISTS owners;
 DROP TABLE IF EXISTS artists;
+DROP TABLE IF EXISTS ownership;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -178,7 +179,7 @@ CREATE TABLE exhibition_artworks (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------
--- Ownership, transactions, provenance
+-- Ownership, transactions, ownership
 -- ---------------------------------------------------------
 
 CREATE TABLE transactions (
@@ -214,15 +215,15 @@ CREATE TABLE transactions (
   CONSTRAINT chk_txn_price_positive CHECK (price IS NULL OR price >= 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE provenance (
-  provenance_id       INT UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE ownership (
+  ownership_id       INT UNSIGNED NOT NULL AUTO_INCREMENT,
   artwork_id          INT UNSIGNED NOT NULL,
   owner_id            INT UNSIGNED NOT NULL,
   acquired_date       DATE,
   relinquished_date   DATE,
   source_document     VARCHAR(255),
   notes               TEXT,
-  PRIMARY KEY (provenance_id),
+  PRIMARY KEY (ownership_id),
   KEY idx_prov_artwork (artwork_id),
   KEY idx_prov_owner (owner_id),
   CONSTRAINT fk_prov_artwork
